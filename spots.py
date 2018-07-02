@@ -1,0 +1,1 @@
+##for spot class - what methods should we include in here?
