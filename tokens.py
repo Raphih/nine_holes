@@ -1,1 +1,0 @@
-#Class for tokens - What methods will we store in these?

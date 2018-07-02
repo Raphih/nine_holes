@@ -1,15 +1,9 @@
 from nine_holes import *
 import copy
-import math #math.inf
+import math 
 import numpy as np
 from minimax_play import *
 
-#board = [[0 for i in range(3)] for i in range(3)]
-#board = [[1,0,0],[2,0,1],[2,2,1]]
-
-
-# returns list of next board states during setup phase
-# team is 1 for blue, 2 for red
 def next_moves_setup(board, team): 
 	next_boards = []
 	for i in range(3):
@@ -77,16 +71,16 @@ def count_twos(board):
 # returns list of [score, board]
 
 ##to do -- setup alpha/beta pruning for this?
-def minimax_setup(board, depth, maximizing_player):
+def minimax_setup(board, depth, alpha, beta, maximizing_player):
 	game_end = game_over(board)[0]
 	if game_end:
 		return [setup_heuristic(board, maximizing_player, depth), board]
 	if depth == 6: #play game for two rounds and see what happens
 		if maximizing_player:
-			score = minimax_play(board, 1, -math.inf, math.inf, 1)[0]
+			score = minimax_play(board, 3, -math.inf, math.inf, 1)[0]
 			return [score, board]
 		else:
-			score = minimax_play(board, 1, -math.inf, math.inf, 2)[0]
+			score = minimax_play(board, 3, -math.inf, math.inf, 2)[0]
 			return [score, board]
 	
 	team = 1
@@ -99,11 +93,15 @@ def minimax_setup(board, depth, maximizing_player):
 		score_board = [maxEval, board]
 		
 		for child in children:
-			eval = minimax_setup(child, depth + 1, 0)[0]
+			eval = minimax_setup(child, depth + 1,alpha,beta, 0)[0]
 			old_eval = maxEval
 			maxEval = max(maxEval, eval)
 			if old_eval != maxEval:
 				score_board = [maxEval, child]
+			alpha = max(alpha, eval)
+			if beta <= alpha: #best/worst case for a player?
+				#print("done")
+				break
 				
 		return score_board
 	
@@ -112,20 +110,17 @@ def minimax_setup(board, depth, maximizing_player):
 		score_board = [minEval, board]
 		
 		for child in children:
-			eval = minimax_setup(child, depth + 1, 1)[0]
+			eval = minimax_setup(child, depth + 1,alpha, beta, 1)[0]
 			old_eval = minEval
 			minEval = min(eval, minEval)
 			if old_eval != minEval:
 				score_board = [minEval, child]
+			beta = min(beta, eval)
+			if beta <= alpha:
+				break
 
 		return score_board
 			
 			
 
 					
-			
-			
-#board = [[1,1,0],[0,2,2],[0,0,0]]
-#print(minimax_setup(board, 4, 1))	
-#print(board)		
-			

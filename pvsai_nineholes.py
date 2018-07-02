@@ -1,10 +1,3 @@
-###What we need to do: 
-#upload all this to github
-# implement alpha/beta pruning for minimax_setup for version control purposes
-
-
-
-
 from nine_display import * 
 from nine_holes import *
 from graphics import *
@@ -45,13 +38,6 @@ def place_tokens_pvsai(win, L):
 		player_id = 2
 		ai_id = 1
 	
-	#testing.. always set ai_id to 2
-	#ai_id = 2
-	#player_id = 1
-	#player = [1, blue_tokens, b_i, "blue"]
-	#ai = [2,red_tokens, r_i,"red"]
-	
-	#end of testing block - delete when done
 			
 	print("ai_id: ", ai_id)
 	for i in range(6):
@@ -66,7 +52,7 @@ def place_tokens_pvsai(win, L):
 			
 			if i % 2 != player_select: # Turn is ai
 				#print("ai turn")
-				new_board = minimax_setup(board, i,player_select)[1] # get ai move
+				new_board = minimax_setup(board, i,-math.inf, math.inf,player_select)[1] # get ai move
 				move_ai(board, new_board,ai,win) # update board and tokens list
 				good_move = True
 			else: # turn is players
@@ -91,8 +77,7 @@ def place_tokens_pvsai(win, L):
 
 		
 def move_ai(board, new_board, ai,win):
-	#print(board)
-	#print(new_board)
+	
 	new_pos = get_difference(board, new_board)
 	print(new_pos)
 	
@@ -150,8 +135,7 @@ def play_game_pvsai(win, L):
 			g_over = game_over(board)[0]
 		
 		else: # ai's turn
-			#print("ai_turn", ai_id)
-			#print(board)
+			
 		
 			maximizing_player = 0
 			if player_id == 1:
@@ -159,12 +143,7 @@ def play_game_pvsai(win, L):
 			else:
 				current_tokens = blue_tokens
 				maximizing_player = 1
-			#for token in current_tokens:
-			#	print("ai_token_loc: ", token.loc)
 			
-			#move = minimax_play(board, 4, -math.inf, math.inf, maximizing_player)[1]
-			
-			#print(next_moves_play(board, ai_id)) # returns old board! why?
 			move = minimax_play(board, 4, -math.inf, math.inf, maximizing_player)[1]#next_moves_play(board, ai_id)[0] # get first next legal move - just to test out rest of function
 			change_loc = get_difference_both(board, move)
 			#print("change_loc", change_loc)
@@ -221,26 +200,8 @@ def update_ai(change_loc, ai_id):
 			
 	board[old_loc[0]][old_loc[1]] = 0
 	token.loc = new_loc
-	#print("changed_loc: ", token.loc)
 	board[new_loc[0]][new_loc[1]] = ai_id
 	selected_token.move((new_loc[0] - old_loc[0])* L/4, (new_loc[1] - old_loc[1]) * L/4)
-	#print("new_board, ", board)
-	#for token in token_list: 
-	#	print("new_token_loc ", token.loc)
-	
+		
 
-	
-	
-	
-	
-	
-# works when player is red..mostly
-# are we not updating board appropriately? would be an updat_ai problem. 	
-	
-	
-	
-	
-
-initialize_pvai(800)	
-
-	
+initialize_pvai(800)
